@@ -5,54 +5,63 @@ import android.content.Context
 import ly.count.android.sdk.Countly
 import java.util.HashMap
 
-object Control {
+object CountlyControl {
 
     var event: String = ""
     lateinit var segmentation: HashMap<String, String>
     var unicKey: String = ""
     var countlyControlAcsess: CountlyControlAccess? = null
 
-    fun build(event: String, unicKey: String = ""): Control {
+    @JvmStatic
+    fun build(event: String, unicKey: String = ""): CountlyControl {
         this.event = event
         segmentation = HashMap()
         this.unicKey = unicKey
         return this
     }
 
+    @JvmStatic
     fun addSuccess() {
         segmentation["Total"] = "Sucesso"
     }
 
+    @JvmStatic
     fun addError() {
         segmentation["Total"] = "Erro"
     }
 
-    fun addSegment(key: String = "", value: String): Control {
+    @JvmStatic
+    fun addSegment(key: String = "", value: String): CountlyControl {
         segmentation[key(key)] = value
         return this
     }
 
+    @JvmStatic
     fun addSegment(key: String = "", value: List<String>) {
         value.forEach {
             segmentation[key(key)] = it
         }
     }
 
+    @JvmStatic
     fun accessToScreen(value: String) {
         countlyControlAcsess = CountlyControlAccess(value)
         countlyControlAcsess!!.accessToScreen()
     }
 
+    @JvmStatic
     fun concludeScreenFlow() {
         countlyControlAcsess!!.conclude()
     }
 
+    @JvmStatic
     fun unfinishedScreenFlow() {
         countlyControlAcsess!!.unfinished()
     }
 
     private fun key(key: String) = if (unicKey.isEmpty()) key else unicKey
 
+    @JvmStatic
     fun send(clear: Boolean = false) {
         try {
             Countly.sharedInstance().recordEvent(event, segmentation, 1)
@@ -66,6 +75,7 @@ object Control {
         }
     }
 
+    @JvmStatic
     fun start(
         context: Context,
         url: String,
@@ -78,6 +88,7 @@ object Control {
         Countly.sharedInstance().onStart(context as Activity)
     }
 
+    @JvmStatic
     fun init(
         context: Context,
         url: String,
