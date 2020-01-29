@@ -3,6 +3,7 @@ package com.trinity.countly
 import android.app.Activity
 import android.content.Context
 import ly.count.android.sdk.Countly
+import ly.count.android.sdk.DeviceId
 import java.util.HashMap
 
 object CountlyControl {
@@ -92,6 +93,25 @@ object CountlyControl {
     fun init(
         context: Context,
         url: String,
+        key: String
+    ) {
+        Countly.sharedInstance().init(context, url, key)
+    }
+
+    @JvmStatic
+    fun init(
+        context: Context,
+        url: String,
+        key: String,
+        deviceId: String
+    ) {
+        Countly.sharedInstance().init(context, url, key, deviceId)
+    }
+
+    @JvmStatic
+    fun init(
+        context: Context,
+        url: String,
         key: String,
         enableCrashReporting: Boolean = false,
         isLoggingEnabled: Boolean = false,
@@ -103,6 +123,26 @@ object CountlyControl {
             Countly.sharedInstance().enableCrashReporting()
         Countly.sharedInstance().isHttpPostForced = isHttpPostForced
     }
+
+    @JvmStatic
+    fun init(
+        context: Context,
+        url: String,
+        key: String,
+        deviceId: String,
+        enableCrashReporting: Boolean = false,
+        isLoggingEnabled: Boolean = false,
+        isHttpPostForced: Boolean = false
+    ) {
+        Countly.sharedInstance().init(context, url, key, deviceId)
+        Countly.sharedInstance().isLoggingEnabled = isLoggingEnabled
+        if (enableCrashReporting)
+            Countly.sharedInstance().enableCrashReporting()
+        Countly.sharedInstance().isHttpPostForced = isHttpPostForced
+    }
+
+    @JvmStatic
+    fun countly(): Countly = Countly.sharedInstance()
 
     class CountlyControlAccess(var value: String) {
         lateinit var segmentation: HashMap<String, String>
